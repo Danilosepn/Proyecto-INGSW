@@ -1,4 +1,4 @@
-package com.proyectoingsw.cafeteria.ui;
+package com.proyectoingsw.cafeteria.ui.boundary;
 
 import com.proyectoingsw.cafeteria.application.AutenticarUsuarioControlador;
 import com.proyectoingsw.cafeteria.domain.Usuario;

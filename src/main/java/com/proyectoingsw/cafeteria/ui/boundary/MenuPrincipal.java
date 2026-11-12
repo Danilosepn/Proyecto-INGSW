@@ -1,4 +1,4 @@
-package com.proyectoingsw.cafeteria.ui;
+package com.proyectoingsw.cafeteria.ui.boundary;
 
 import java.util.Objects;
 

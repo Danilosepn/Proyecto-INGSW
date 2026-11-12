@@ -1,15 +1,13 @@
-package com.proyectoingsw.cafeteria.ui;
+package com.proyectoingsw.cafeteria.ui.boundary;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.proyectoingsw.cafeteria.application.AdministradorFAQ;
 import com.proyectoingsw.cafeteria.application.AutenticarUsuarioControlador;
 import com.proyectoingsw.cafeteria.application.ComprarAlimentoManejador;
 import com.proyectoingsw.cafeteria.application.ControladorTickets;
 import com.proyectoingsw.cafeteria.application.FacturaControlador;
-import com.proyectoingsw.cafeteria.application.GestorResenia;
 import com.proyectoingsw.cafeteria.application.PagarEfectivo;
 import com.proyectoingsw.cafeteria.application.SeleccionarAlimentoControlador;
 import com.proyectoingsw.cafeteria.domain.Usuario;
@@ -35,17 +33,6 @@ class PantallaRelationshipTest {
         assertDistinctPrivateChildren(pago1, pago2, "formulario");
         assertSame(purchaseControl, pago1.getControl());
         assertSame(purchaseControl, pago2.getControl());
-
-        AdministradorFAQ faqControl = stub(AdministradorFAQ.class);
-        GestorResenia reviewControl = stub(GestorResenia.class);
-        PantallaServicioCliente servicio1 =
-                new PantallaServicioCliente(faqControl, reviewControl);
-        PantallaServicioCliente servicio2 =
-                new PantallaServicioCliente(faqControl, reviewControl);
-        assertDistinctPrivateChildren(servicio1, servicio2, "faq");
-        assertDistinctPrivateChildren(servicio1, servicio2, "formularioResenia");
-        assertSame(faqControl, servicio1.getAdministracionFAQ());
-        assertSame(reviewControl, servicio1.getGestionResenia());
 
         AutenticarUsuarioControlador authentication =
                 stub(AutenticarUsuarioControlador.class);

@@ -1,4 +1,4 @@
-package com.proyectoingsw.cafeteria.ui;
+package com.proyectoingsw.cafeteria.ui.boundary;
 
 public final class FormularioBusqueda {
     private String campoTexto = "";

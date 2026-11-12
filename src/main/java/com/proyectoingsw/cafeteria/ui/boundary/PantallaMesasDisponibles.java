@@ -1,4 +1,4 @@
-package com.proyectoingsw.cafeteria.ui;
+package com.proyectoingsw.cafeteria.ui.boundary;
 
 import com.proyectoingsw.cafeteria.application.ReservarMesaManejador;
 import com.proyectoingsw.cafeteria.domain.Mesa;

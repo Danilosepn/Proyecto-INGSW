@@ -7,7 +7,5 @@ public interface GeneradorGrafico {
 
     void generarDiagramaPastel();
 
-    void generarResumenDePreguntas();
-
     Reporte generarReporte();
 }

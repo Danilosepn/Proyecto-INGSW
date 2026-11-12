@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.proyectoingsw.cafeteria.domain.Alimento;
-import com.proyectoingsw.cafeteria.domain.PreguntaFAQ;
 import com.proyectoingsw.cafeteria.domain.Reserva;
 import java.math.BigDecimal;
 import java.time.LocalDate;
