@@ -41,11 +41,16 @@ Customer-service requests, FAQ browsing, and review submission are outside the
 current project scope. Their screen, forms/views, domain types, managers, DAO
 contracts/adapters, and FAQ-specific chart operation are not implemented.
 
-Concrete payment, authentication, report-generation, controller, and SQL DAO
-implementations are not included: the diagram omits the UI/runtime technology,
-database schema, authentication provider, payment APIs, and behavior for its
-referenced types. `Compra` and `Estudiante` are marker interfaces only because
-the diagram references them but provides no attributes or lifecycle.
+Concrete payment, authentication, report-generation, and SQL DAO
+implementations are not included: the diagram omits the database schema,
+authentication provider, payment APIs, and behavior for its referenced types.
+The Swing demo supplies in-memory food and ticket services; unsupported
+authentication, reservation, payment, invoice, and reporting actions identify
+the missing integration instead of reporting a false success. `Compra` and
+`Estudiante` are marker interfaces only because the diagram references them
+but provides no attributes or lifecycle.
+`PantallaEstadisticas` exposes its selected table as context, but current
+statistics contracts do not accept a table and therefore remain global.
 `DefaultGestorTicket` creates a QR payload from the generated ticket ID because
 the diagram specifies a QR matrix but no payload format.
 
@@ -65,4 +70,6 @@ the diagram specifies a QR matrix but no payload format.
 
 ## Build
 
-Run `mvn test` with JDK 17 or newer.
+Run `mvn test` with JDK 17 or newer. To launch the Swing demonstration in a
+desktop environment, run `mvn exec:java`; the menu navigates between the active
+screens, with their associated forms and views embedded in the relevant screens.

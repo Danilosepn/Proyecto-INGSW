@@ -62,6 +62,9 @@ The diagram does not show a return type for `mostrar` or parentheses after
 
 `CalculadorEstadisitcas` is transcribed as it appears in the image; its spelling
 and relationship to the control class elsewhere in the UML are inconsistent.
+In the GUI, `seleccionMesa()` returns the Mesa selected in this screen's
+statistics context; `MesasDisponibles()` navigates to the dedicated table
+screen.
 
 ### `Login` — present in `ui.boundary`
 
@@ -247,6 +250,7 @@ instance, not exclusive ownership or a global inverse cardinality.
 | `PantallaCajero.controlFacturas` | `FacturaControlador` / invoice control | Association | 1 reference; inverse unspecified | Present. |
 | `PantallaEstadisticas.calculador` | `CalculadorEstadisitcas` / statistics control | Association | 1 reference; inverse unspecified | Present; collaborator spelling differs from the control name elsewhere in the UML. |
 | `PantallaEstadisticas.graficos` | `GeneradorGraficos` / graph control | Association | 1 reference; inverse unspecified | Present. |
+| `PantallaEstadisticas.seleccionMesa()` | `Mesa` / selected statistics context | Operation return, no persistent association | At most one Mesa per call | Present as a screen-local selector. The operation returns its selected domain object; it does not add a link to `PantallaMesasDisponibles`. |
 | `Login.formLoging` | `FormularioLoging` / login form | Form ownership; user-confirmed composition | 1 screen to 1 form | Present as `FormularioLogin`; UML role/type spelling differs. |
 | `Login.autenticacion` | `AutenticarUsuarioControlador` / authentication control | Association | 1 reference; inverse unspecified | Present. |
 | `Login.usr` | `Usuario` / authenticated user | Association | 1 reference; inverse unspecified | Present. |
@@ -301,3 +305,12 @@ image. Screen-component links are simple associations except the specifically
 confirmed 1:1 screen-owned form/view compositions. Those are design decisions
 confirmed for the implementation, not a claim that every connector or label in
 the embedded image is legible.
+
+The GUI implements `PantallaEstadisticas.seleccionMesa(): Mesa` as a local
+screen selection, as confirmed for this feature. The app supplies Mesa options
+from its in-memory DAO to both the statistics selector and the table screen;
+there is no persistent association between those two screens. The existing
+`CalculadorEstadisticas` and `GeneradorGraficos` contracts do not accept a Mesa,
+so the selected object is returned to callers while current report/chart
+operations remain global; per-Mesa computation needs a later service-contract
+change rather than invented behavior in the boundary.
