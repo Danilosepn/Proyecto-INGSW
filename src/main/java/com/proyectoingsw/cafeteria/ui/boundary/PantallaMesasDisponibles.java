@@ -33,7 +33,7 @@ public final class PantallaMesasDisponibles extends PantallaBase {
             }
             return item;
         });
-        JButton consultar = new JButton("Consultar disponibilidad real");
+        JButton consultar = new JButton("Consultar disponibilidad");
         consultar.addActionListener(event -> consultarDisponibilidad());
         JButton actualizar = new JButton("Mostrar mesas de demostración");
         actualizar.addActionListener(event -> MesasDisponibles());
@@ -44,7 +44,7 @@ public final class PantallaMesasDisponibles extends PantallaBase {
         acciones.add(actualizar);
         acciones.add(volver);
         contenido().add(new JLabel(
-                "Estado local ilustrativo; las reservas no están conectadas a un servicio."),
+                "Estado de mesas cargado desde el almacenamiento local."),
                 BorderLayout.NORTH);
         contenido().add(new JScrollPane(lista), BorderLayout.CENTER);
         contenido().add(acciones, BorderLayout.SOUTH);
@@ -84,8 +84,8 @@ public final class PantallaMesasDisponibles extends PantallaBase {
         try {
             mostrarEstado(controlMesas.consultarDisponibilidadMesa(seleccionada)
                     ? "Mesa disponible." : "Mesa no disponible.");
-        } catch (UnsupportedOperationException error) {
-            mostrarEstado(error.getMessage());
+        } catch (RuntimeException error) {
+            mostrarEstado(mensajeError(error));
         }
     }
 }

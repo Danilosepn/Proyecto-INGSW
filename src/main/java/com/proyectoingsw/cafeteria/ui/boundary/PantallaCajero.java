@@ -42,7 +42,7 @@ public final class PantallaCajero extends PantallaBase {
                 () -> {
                     var generado = controladorTickets.generarTicket();
                     boolean valido = controlTickets.validarTicket(generado);
-                    return "Ticket #%d generado en memoria; validación: %s."
+                    return "Ticket #%d generado; validación: %s."
                             .formatted(generado.idTicket(), valido ? "válido" : "no válido");
                 }));
         JButton pago = new JButton("Registrar pago en efectivo");
@@ -55,7 +55,7 @@ public final class PantallaCajero extends PantallaBase {
         acciones.add(pago);
         acciones.add(factura);
         contenido().add(new JLabel(
-                "Pedidos ilustrativos; tickets usan almacenamiento solo en memoria."),
+                "Pedidos de ejemplo; tickets se guardan en la base de datos local."),
                 BorderLayout.NORTH);
         contenido().add(vistaPedidos, BorderLayout.CENTER);
         contenido().add(acciones, BorderLayout.SOUTH);
@@ -64,8 +64,8 @@ public final class PantallaCajero extends PantallaBase {
     private void ejecutarDemo(java.util.function.Supplier<String> operacion) {
         try {
             mostrarEstado(operacion.get());
-        } catch (UnsupportedOperationException error) {
-            mostrarEstado(error.getMessage());
+        } catch (RuntimeException error) {
+            mostrarEstado(mensajeError(error));
         }
     }
 

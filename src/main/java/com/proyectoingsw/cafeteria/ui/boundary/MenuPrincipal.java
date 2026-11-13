@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 public final class MenuPrincipal extends PantallaBase {
     private final SelectorVentanas selectorVentanas;
-    private boolean visible;
 
     public MenuPrincipal(SelectorVentanas selectorVentanas) {
         super("Cafetería — menú principal");
@@ -27,7 +26,7 @@ public final class MenuPrincipal extends PantallaBase {
         salir.addActionListener(event -> navegar("salir"));
         opciones.add(salir);
         JPanel centro = new JPanel(new BorderLayout(8, 12));
-        centro.add(new JLabel("Selecciona una pantalla. Los datos de muestra son temporales."),
+        centro.add(new JLabel("Selecciona una pantalla. Los datos locales se conservan entre sesiones."),
                 BorderLayout.NORTH);
         centro.add(opciones, BorderLayout.CENTER);
         centro.add(selectorVentanas, BorderLayout.SOUTH);
@@ -47,7 +46,6 @@ public final class MenuPrincipal extends PantallaBase {
     }
 
     public void mostrar() {
-        visible = true;
         setVisible(true);
     }
 
@@ -55,7 +53,4 @@ public final class MenuPrincipal extends PantallaBase {
         selectorVentanas.cambiarVentana(pantalla);
     }
 
-    public boolean isVisible() {
-        return visible;
-    }
 }

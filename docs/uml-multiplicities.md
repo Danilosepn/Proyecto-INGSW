@@ -85,6 +85,19 @@ values do not establish persistent entity links or cardinalities.
 | `ReservarMesa` / reservation store | `ReservaDAO` / reservation DAO | `1 : not specified` | Simple association | Singular DAO collaborator shown in the control. |
 | `ConnectionDB` / current `connection` | `java.sql.Connection` / JDBC connection | `0..1 : 1` | Simple association | Code field is nullable before connection/after close; no UML multiplicity label. |
 
+The H2 schema has `ALIMENTO`, `MESA`, `RESERVA`, `TICKET`, `FACTURA`,
+`LINEA_FACTURA`, and `REPORTE` tables, primary keys on each entity ID,
+non-negative stock/monetary checks, and indexes for the UML search operations.
+`RESERVA_MESA` is a foreign-key association table that allows multiple Mesa
+rows per reservation and makes each Mesa unique to at most one reservation.
+`FACTURA_TICKET` uses unique foreign keys on both ends to enforce at most one
+ticket per invoice and vice versa. A relational schema cannot require a parent
+to have a row in either association table at all times, so the UML's minimum
+cardinalities apply when an association is created, not to unlinked records.
+Transactional reservation-association updates set/clear `Mesa.reservada`; the
+current domain CRUD record does not include relation IDs, so these tables do
+not imply an additional boundary association.
+
 No application service composes a DAO or domain object. The inverse DAO-to-service
 cardinality is not shown and may be shared, so it remains unspecified.
 

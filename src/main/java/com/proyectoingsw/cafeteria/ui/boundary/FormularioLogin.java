@@ -11,7 +11,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public final class FormularioLogin extends JPanel {
-    private boolean visible;
     private String metodoAutenticacion;
     private Map<String, String> parametros = Map.of();
     private final JComboBox<String> metodo = new JComboBox<>(
@@ -63,16 +62,10 @@ public final class FormularioLogin extends JPanel {
     }
 
     public void mostrar() {
-        visible = true;
         setVisible(true);
     }
 
     public void cerrar() {
-        visible = false;
         setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 }

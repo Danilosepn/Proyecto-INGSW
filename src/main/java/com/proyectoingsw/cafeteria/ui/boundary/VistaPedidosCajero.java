@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public final class VistaPedidosCajero extends JPanel {
-    private boolean visible;
     private final DefaultListModel<String> pedidos = new DefaultListModel<>();
     private final JList<String> lista = new JList<>(pedidos);
     private final JLabel detalleTicket = new JLabel("Selecciona un pedido para ver sus datos.");
@@ -22,7 +21,6 @@ public final class VistaPedidosCajero extends JPanel {
     }
 
     public void listarPedidos() {
-        visible = true;
         setVisible(true);
         pedidos.clear();
         pedidos.addElement("Pedido demo #101 — 2 cafés");
@@ -31,7 +29,6 @@ public final class VistaPedidosCajero extends JPanel {
     }
 
     public void mostrarDatosTicket() {
-        visible = true;
         setVisible(true);
         String pedido = lista.getSelectedValue();
         detalleTicket.setText(pedido == null
@@ -40,12 +37,7 @@ public final class VistaPedidosCajero extends JPanel {
     }
 
     public void ocultar() {
-        visible = false;
         setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 
     public String pedidoSeleccionado() {

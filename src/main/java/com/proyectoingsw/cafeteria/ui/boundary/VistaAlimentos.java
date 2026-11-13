@@ -12,7 +12,6 @@ import javax.swing.JScrollPane;
 
 public final class VistaAlimentos extends JPanel {
     private List<Alimento> menuAlimentos;
-    private boolean visible;
     private final DefaultListModel<Alimento> modelo = new DefaultListModel<>();
     private final JList<Alimento> lista = new JList<>(modelo);
     private final JLabel seleccionado = new JLabel("Selecciona un alimento.");
@@ -40,7 +39,7 @@ public final class VistaAlimentos extends JPanel {
                         : "%s — %s".formatted(alimento.nombre(), alimento.descripcion()));
             }
         });
-        add(new JLabel("Catálogo de demostración (no persistido)"), BorderLayout.NORTH);
+        add(new JLabel("Catálogo local de alimentos"), BorderLayout.NORTH);
         add(new JScrollPane(lista), BorderLayout.CENTER);
         add(seleccionado, BorderLayout.SOUTH);
         actualizarAlimentos(menuAlimentos);
@@ -57,17 +56,11 @@ public final class VistaAlimentos extends JPanel {
     }
 
     public void ocultar() {
-        visible = false;
         setVisible(false);
     }
 
     public void mostrar() {
-        visible = true;
         setVisible(true);
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 
     public Alimento obtenerSeleccion() {

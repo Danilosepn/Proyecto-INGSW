@@ -27,7 +27,7 @@ public final class PantallaPago extends PantallaBase {
         acciones.add(mostrarDatos);
         acciones.add(ticket);
         contenido().add(new JLabel(
-                "Formulario de referencia; ningún pago ni compra se guarda."),
+                "El pago está deshabilitado hasta conectar un proveedor; no se realiza ningún cargo."),
                 BorderLayout.NORTH);
         contenido().add(formulario, BorderLayout.CENTER);
         contenido().add(acciones, BorderLayout.SOUTH);
@@ -37,9 +37,9 @@ public final class PantallaPago extends PantallaBase {
         String metodo = formulario.obtenerOpcionPago();
         try {
             mostrarEstado(control.verCarritoCompra(control.iniciarCompra()));
-        } catch (UnsupportedOperationException error) {
-            mostrarEstado("%s Método seleccionado: %s (solo demostración)."
-                    .formatted(error.getMessage(), metodo));
+        } catch (RuntimeException error) {
+            mostrarEstado("%s Método seleccionado: %s."
+                    .formatted(mensajeError(error), metodo));
         }
     }
 

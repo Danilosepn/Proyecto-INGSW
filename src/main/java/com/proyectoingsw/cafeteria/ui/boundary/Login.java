@@ -13,7 +13,6 @@ public final class Login extends PantallaBase {
     private final FormularioLogin formulario;
     private final AutenticarUsuarioControlador autenticacion;
     private final Usuario usuario;
-    private boolean visible;
 
     public Login(
             AutenticarUsuarioControlador autenticacion,
@@ -49,8 +48,8 @@ public final class Login extends PantallaBase {
             } else {
                 mostrarEstado("Credenciales no aceptadas.");
             }
-        } catch (UnsupportedOperationException error) {
-            mostrarEstado(error.getMessage());
+        } catch (RuntimeException error) {
+            mostrarEstado(mensajeError(error));
         }
     }
 
@@ -63,16 +62,10 @@ public final class Login extends PantallaBase {
     }
 
     public void mostrar() {
-        visible = true;
         setVisible(true);
     }
 
     public void cerrar() {
-        visible = false;
         setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 }

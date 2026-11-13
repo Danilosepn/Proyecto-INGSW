@@ -100,13 +100,23 @@ classes are not defined in the diagram.
 | `IReservaDataHelper` | Find reservations by date, student, time slot, or professor |
 | `ITicketDataHelper` | Find tickets by validity |
 | `AlimentoDAO`, `FacturaDAO`, `MesaDAO`, `ReporteDAO`, `ReservaDAO`, `TicketDAO` | Each specializes generic CRUD for one domain type and extends its matching search helper. |
-| `InMemoryDataHelperSQL<T, K>` | Thread-safe generic CRUD implementation with explicit duplicate/missing-key errors |
-| In-memory DAO implementations | Local implementations of the remaining domain DAO contracts for operation and testing |
+| `JdbcDatabase`, `JdbcDataHelper<T, K>` | Idempotent H2 schema initialization, per-operation connections, transaction helper, and shared CRUD operations |
+| `Jdbc*DAO` | JDBC implementations for the retained entity DAO contracts; H2 constraints, indexes, association tables, and query methods follow the UML-visible fields |
+| `InMemoryDataHelperSQL<T, K>` and in-memory DAO implementations | Thread-safe adapters retained for unit tests and isolated demo wiring |
+
+The embedded H2 database uses the schema in `src/main/resources/db/schema.sql`
+and the desktop app stores it under `./data/cafeteria`. Reservation-to-Mesa and
+Factura-to-Ticket associations are relational join tables; reservation link
+updates are transactional. The SQL schema stores `LineaFactura`'s visible
+attributes, but the UML/domain do not expose its invoice or food keys, so no
+such foreign keys are invented. The same limitation prevents complete cart,
+reservation identity, and invoice workflows from being inferred.
 
 The generic helper diagram uses `String` for `buscarPorId` but `K` for
 `eliminar`. The code uses `K` consistently for both identifiers. Helper search
-methods return `List<T>`, preserving visible many-valued results. No concrete
-SQL schema or SQL dialect is inferable.
+methods return `List<T>`, preserving visible many-valued results. The UML does
+not specify a database vendor or schema dialect; embedded H2 was selected to
+provide a reproducible local application database without an external server.
 
 ## Relationship register
 

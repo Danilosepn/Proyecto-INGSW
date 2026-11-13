@@ -20,20 +20,19 @@ public final class PantallaTicket extends PantallaBase {
     private final JLabel detalle = new JLabel(
             "Aún no se ha generado un ticket.", SwingConstants.CENTER);
     private Ticket ticketActual;
-    private boolean visible;
 
     public PantallaTicket(ControladorTicket controlTicket) {
         super("Ticket");
         this.controlTicket = Objects.requireNonNull(controlTicket);
-        JButton generar = new JButton("Generar ticket de demostración");
-        generar.addActionListener(event -> generarTicket());
+        JButton generar = new JButton("Generar ticket");
+        generar.addActionListener(event -> ejecutarSeguro(this::generarTicket));
         JButton validar = new JButton("Validar ticket");
         validar.addActionListener(event -> validarTicket());
         JPanel acciones = new JPanel(new FlowLayout(FlowLayout.LEADING));
         acciones.add(generar);
         acciones.add(validar);
         contenido().add(new JLabel(
-                "Los tickets se guardan únicamente en memoria y se pierden al cerrar."),
+                "Los tickets se guardan en el almacenamiento configurado."),
                 BorderLayout.NORTH);
         contenido().add(detalle, BorderLayout.CENTER);
         contenido().add(acciones, BorderLayout.SOUTH);
@@ -48,7 +47,7 @@ public final class PantallaTicket extends PantallaBase {
         detalle.setVerticalTextPosition(SwingConstants.BOTTOM);
         detalle.setHorizontalTextPosition(SwingConstants.CENTER);
         detalle.setToolTipText("Código QR del ticket");
-        mostrarEstado("Ticket de demostración generado en memoria.");
+        mostrarEstado("Ticket generado y guardado.");
     }
 
     private void validarTicket() {
@@ -56,8 +55,8 @@ public final class PantallaTicket extends PantallaBase {
             mostrarEstado("Genera un ticket antes de validarlo.");
             return;
         }
-        mostrarEstado(controlTicket.validarTicket(ticketActual)
-                ? "Ticket válido en memoria." : "Ticket no válido.");
+        ejecutarSeguro(() -> mostrarEstado(controlTicket.validarTicket(ticketActual)
+                ? "Ticket válido." : "Ticket no válido."));
     }
 
     public ControladorTicket getControlTicket() {
@@ -65,12 +64,7 @@ public final class PantallaTicket extends PantallaBase {
     }
 
     public void mostrarTicket() {
-        visible = true;
         setVisible(true);
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 
     private static final class QrIcon implements Icon {

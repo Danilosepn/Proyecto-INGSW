@@ -3,6 +3,7 @@ package com.proyectoingsw.cafeteria.application;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.common.BitMatrix;
 import com.proyectoingsw.cafeteria.domain.Ticket;
 import com.proyectoingsw.cafeteria.persistence.TicketDAO;
 import java.time.Clock;
@@ -49,9 +50,31 @@ public final class DefaultGestorTicket implements GestorTicket {
             return false;
         }
         try {
-            return tickets.buscarPorId(ticket.idTicket()).equals(ticket);
+            Ticket stored = tickets.buscarPorId(ticket.idTicket());
+            return stored.valido()
+                    && stored.fechaGeneracion().equals(ticket.fechaGeneracion())
+                    && sameMatrix(stored.codigoQR(), ticket.codigoQR());
         } catch (NoSuchElementException exception) {
             return false;
         }
+    }
+
+    private static boolean sameMatrix(BitMatrix first, BitMatrix second) {
+        if (first == second) {
+            return true;
+        }
+        if (first == null || second == null
+                || first.getWidth() != second.getWidth()
+                || first.getHeight() != second.getHeight()) {
+            return false;
+        }
+        for (int y = 0; y < first.getHeight(); y++) {
+            for (int x = 0; x < first.getWidth(); x++) {
+                if (first.get(x, y) != second.get(x, y)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

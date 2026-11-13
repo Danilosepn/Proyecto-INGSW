@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 public abstract class PantallaBase extends JPanel {
     private Consumer<String> navegador = ignored -> { };
     private final JLabel estado = new JLabel(
-            "Modo demostración: las operaciones sin backend no se guardan.",
+            "La aplicación local muestra aquí el resultado de cada acción.",
             SwingConstants.LEFT);
     private final JPanel contenido = new JPanel(new BorderLayout(12, 12));
     protected PantallaBase(String titulo) {
@@ -47,6 +47,20 @@ public abstract class PantallaBase extends JPanel {
 
     protected final void mostrarEstado(String mensaje) {
         estado.setText(Objects.requireNonNull(mensaje));
+    }
+
+    protected final String mensajeError(RuntimeException error) {
+        String detalle = error.getMessage();
+        return "No se pudo completar la operación."
+                + (detalle == null || detalle.isBlank() ? "" : " " + detalle);
+    }
+
+    protected final void ejecutarSeguro(Runnable accion) {
+        try {
+            accion.run();
+        } catch (RuntimeException error) {
+            mostrarEstado(mensajeError(error));
+        }
     }
 
 }

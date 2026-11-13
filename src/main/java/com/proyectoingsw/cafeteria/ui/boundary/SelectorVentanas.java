@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public final class SelectorVentanas extends JPanel {
-    private boolean visible;
     private String ventanaActual;
     private Consumer<String> navegador = ignored -> { };
     private final JComboBox<String> destinos = new JComboBox<>(new String[] {
@@ -46,16 +45,10 @@ public final class SelectorVentanas extends JPanel {
     }
 
     public void mostrar() {
-        visible = true;
         setVisible(true);
     }
 
     public void ocultar() {
-        visible = false;
         setVisible(false);
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 }

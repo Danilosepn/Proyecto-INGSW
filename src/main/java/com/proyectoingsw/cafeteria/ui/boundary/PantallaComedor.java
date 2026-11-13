@@ -21,7 +21,8 @@ public final class PantallaComedor extends PantallaBase {
         this.menu = new VistaAlimentos(List.<Alimento>of());
         this.busqueda = new FormularioBusqueda();
         this.controlAlimentos = Objects.requireNonNull(controlAlimentos);
-        JButton cargar = new JButton("Buscar / cargar alimentos de muestra");
+        busqueda.setAccionBusqueda(this::cargarMenu);
+        JButton cargar = new JButton("Buscar alimentos");
         cargar.addActionListener(event -> cargarMenu());
         JButton pagar = new JButton("Ir a pago");
         pagar.addActionListener(event -> navegar("pago"));
@@ -33,16 +34,17 @@ public final class PantallaComedor extends PantallaBase {
         busquedaPanel.add(controles, BorderLayout.EAST);
         contenido().add(busquedaPanel, BorderLayout.NORTH);
         contenido().add(menu, BorderLayout.CENTER);
+        cargarMenu();
     }
 
     private void cargarMenu() {
         try {
             List<Alimento> filtrados = solicitarBusqueda();
             menu.actualizarAlimentos(filtrados);
-            mostrarEstado("%d alimentos de demostración; ningún cambio se persiste."
+            mostrarEstado("%d alimentos encontrados en el catálogo local."
                     .formatted(filtrados.size()));
-        } catch (UnsupportedOperationException error) {
-            mostrarEstado(error.getMessage());
+        } catch (RuntimeException error) {
+            mostrarEstado(mensajeError(error));
         }
     }
 
@@ -62,5 +64,13 @@ public final class PantallaComedor extends PantallaBase {
 
     public SeleccionarAlimentoControlador getControlAlimentos() {
         return controlAlimentos;
+    }
+
+    public List<Alimento> getMenuAlimentos() {
+        return menu.getMenuAlimentos();
+    }
+
+    public FormularioBusqueda getFormularioBusqueda() {
+        return busqueda;
     }
 }

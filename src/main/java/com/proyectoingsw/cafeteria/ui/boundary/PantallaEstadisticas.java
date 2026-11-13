@@ -80,8 +80,8 @@ public final class PantallaEstadisticas extends PantallaBase {
     private void ejecutarDemo(java.util.function.Supplier<String> operacion) {
         try {
             mostrarEstado(operacion.get());
-        } catch (UnsupportedOperationException error) {
-            mostrarEstado(error.getMessage());
+        } catch (RuntimeException error) {
+            mostrarEstado(mensajeError(error));
         }
     }
 

@@ -20,7 +20,11 @@ import com.proyectoingsw.cafeteria.domain.Reporte;
 import com.proyectoingsw.cafeteria.domain.Reserva;
 import com.proyectoingsw.cafeteria.domain.Ticket;
 import com.proyectoingsw.cafeteria.persistence.InMemoryAlimentoDAO;
+import com.proyectoingsw.cafeteria.persistence.InMemoryMesaDAO;
 import com.proyectoingsw.cafeteria.persistence.InMemoryTicketDAO;
+import com.proyectoingsw.cafeteria.persistence.AlimentoDAO;
+import com.proyectoingsw.cafeteria.persistence.MesaDAO;
+import com.proyectoingsw.cafeteria.persistence.TicketDAO;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,8 +32,8 @@ import java.util.Objects;
 import org.w3c.dom.Document;
 
 /**
- * Explicit demo wiring: food and tickets use session-local in-memory DAOs;
- * integrations without a real implementation fail visibly when invoked.
+ * The UI adapter delegates food, mesa, and ticket persistence to injected DAOs.
+ * Unsupported external integrations fail visibly when invoked.
  */
 public final class DemoCafeteriaServices implements
         AutenticarUsuarioControlador,
@@ -42,11 +46,12 @@ public final class DemoCafeteriaServices implements
         PagarEfectivo,
         ReservarMesaManejador,
         SeleccionarAlimentoControlador {
-    private final InMemoryAlimentoDAO alimentos = new InMemoryAlimentoDAO();
-    private final DefaultGestorTicket gestorTicket =
-            new DefaultGestorTicket(new InMemoryTicketDAO(), Clock.systemDefaultZone());
+    private final AlimentoDAO alimentos;
+    private final MesaDAO mesas;
+    private final DefaultGestorTicket gestorTicket;
 
     public DemoCafeteriaServices() {
+        this(new InMemoryAlimentoDAO(), new InMemoryTicketDAO(), new InMemoryMesaDAO());
         alimentos.agregar(new Alimento(
                 1, "Café de altura", "Bebida", "Café filtrado de demostración",
                 12, new java.math.BigDecimal("1.50")));
@@ -56,6 +61,17 @@ public final class DemoCafeteriaServices implements
         alimentos.agregar(new Alimento(
                 3, "Jugo de naranja", "Bebida", "Jugo de muestra",
                 0, new java.math.BigDecimal("2.00")));
+        for (int id = 1; id <= 6; id++) {
+            mesas.agregar(new Mesa(id, false));
+        }
+    }
+
+    public DemoCafeteriaServices(
+            AlimentoDAO alimentos, TicketDAO tickets, MesaDAO mesas) {
+        this.alimentos = Objects.requireNonNull(alimentos);
+        this.mesas = Objects.requireNonNull(mesas);
+        this.gestorTicket = new DefaultGestorTicket(
+                Objects.requireNonNull(tickets), Clock.systemDefaultZone());
     }
 
     @Override
@@ -184,7 +200,8 @@ public final class DemoCafeteriaServices implements
 
     @Override
     public boolean consultarDisponibilidadMesa(Mesa mesa) {
-        throw noConfigurado("Disponibilidad de mesas");
+        Objects.requireNonNull(mesa);
+        return !mesas.buscarPorId(mesa.idMesa()).reservada();
     }
 
     @Override
