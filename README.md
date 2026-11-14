@@ -1,9 +1,15 @@
 # Cafetería
 
-Java 17 model based on the attached Visual Paradigm class diagram. The repository
-was empty at the start of this work, so this project uses the Java types shown in
-the UML and a conventional Maven layout; no existing application framework,
-database schema, or UI toolkit was available to preserve.
+Aplicación de escritorio Java 17 para una cafetería universitaria. El proyecto
+incluye interfaz Swing, modelo de dominio, persistencia JDBC con H2 embebido y
+pruebas automatizadas. La estructura sigue el diagrama de clases y conserva el
+esquema SQL en `src/main/resources/db/schema.sql`.
+
+Para configurar y ejecutar la aplicación con su base de datos local, consulta
+el [tutorial de instalación y ejecución](docs/tutorial-base-datos.md). Las
+diferencias verificables entre los archivos Java adjuntos y la implementación,
+junto con las recomendaciones para actualizar el UML, se resumen en
+[correcciones de lógica y UML](docs/correcciones-logica-uml.md).
 
 ## Model interpretation
 

@@ -16,9 +16,12 @@ import com.proyectoingsw.cafeteria.ui.CafeteriaApp;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.DriverManager;
 import java.sql.Statement;
 import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import javax.swing.SwingUtilities;
@@ -145,6 +148,28 @@ class JdbcDatabaseTest {
                 9, 2, new BigDecimal("3.25"), new BigDecimal("6.50"));
         lineas.agregar(linea);
         assertEquals(linea, new JdbcLineaFacturaDAO(database).buscarPorId(9));
+    }
+
+    @Test
+    void upgradesLegacyTicketTimestampPrecision() throws Exception {
+        String url = "jdbc:h2:mem:legacy_ticket_" + UUID.randomUUID().toString().replace("-", "")
+                + ";DB_CLOSE_DELAY=-1";
+        try (var connection = DriverManager.getConnection(url, "sa", "");
+             Statement statement = connection.createStatement()) {
+            statement.execute("CREATE TABLE TICKET ("
+                    + "ID_TICKET INTEGER PRIMARY KEY, "
+                    + "FECHA_GENERACION TIMESTAMP NOT NULL, "
+                    + "VALIDO BOOLEAN NOT NULL, "
+                    + "CODIGO_QR BLOB)");
+        }
+
+        JdbcDatabase migrated = new JdbcDatabase(url, "sa", "");
+        JdbcTicketDAO tickets = new JdbcTicketDAO(migrated);
+        Clock clock = Clock.fixed(
+                Instant.parse("2026-11-13T23:59:59.123456789Z"), ZoneOffset.UTC);
+        var ticket = new DefaultGestorTicket(tickets, clock).generarTicket();
+
+        assertEquals(ticket, tickets.buscarPorId(ticket.idTicket()));
     }
 
     @Test
